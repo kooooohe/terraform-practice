@@ -35,6 +35,7 @@ resource "aws_s3_bucket" "public" {
 }
 
 resource "aws_s3_bucket" "alb_log" {
+  force_destroy = true
   bucket = "alb-log-pragatic-terraform-2020-03-30"
 
   lifecycle_rule {
