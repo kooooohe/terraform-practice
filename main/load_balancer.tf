@@ -1,4 +1,7 @@
 resource "aws_lb" "example" {
+  tags = {
+      Name = "terraform_example"
+  }
   name = "example"
   load_balancer_type = "application"
   internal = false

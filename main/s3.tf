@@ -1,4 +1,5 @@
 resource "aws_s3_bucket" "private" {
+  force_destroy = true
   bucket = "private-pragmatic-terraform-2020-03-30"
 
   versioning {
@@ -23,6 +24,7 @@ resource "aws_s3_bucket_public_access_block" "private" {
 }
 
 resource "aws_s3_bucket" "public" {
+  force_destroy = true
   bucket = "public-pragmatic-terraform-2020-03-30"
   acl    = "public-read"
 

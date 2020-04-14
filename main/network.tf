@@ -4,7 +4,7 @@ resource "aws_vpc" "example" {
   enable_dns_hostnames = true
 
   tags = {
-      Name = "example"
+      Name = "terraform_example"
   }
 }
 
@@ -22,6 +22,9 @@ resource "aws_subnet" "public_0" {
   cidr_block = "10.0.1.0/24"
   map_public_ip_on_launch = true
   availability_zone = "ap-northeast-1a"
+  tags = {
+      Name = "terraform_example"
+  }
 }
 
 resource "aws_subnet" "public_1" {
@@ -29,15 +32,24 @@ resource "aws_subnet" "public_1" {
   cidr_block = "10.0.2.0/24"
   map_public_ip_on_launch = true
   availability_zone = "ap-northeast-1c"
+  tags = {
+      Name = "terraform_example"
+  }
 }
 
 
 resource "aws_internet_gateway" "example" {
   vpc_id = aws_vpc.example.id
+  tags = {
+      Name = "terraform_example"
+  }
 }
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.example.id 
+  tags = {
+      Name = "terraform_example"
+  }
 }
 
 resource "aws_route" "public" {
@@ -77,12 +89,18 @@ resource "aws_subnet" "private_0" {
   cidr_block = "10.0.65.0/24"
   availability_zone = "ap-northeast-1a"
   map_public_ip_on_launch = false
+  tags = {
+      Name = "terraform_example"
+  }
 }
 resource "aws_subnet" "private_1" {
   vpc_id = aws_vpc.example.id
   cidr_block = "10.0.66.0/24"
   availability_zone = "ap-northeast-1c"
   map_public_ip_on_launch = false
+  tags = {
+      Name = "terraform_example"
+  }
 }
 
 /*
@@ -92,9 +110,15 @@ resource "aws_route_table" "private" {
 */
 resource "aws_route_table" "private_0" {
   vpc_id = aws_vpc.example.id
+  tags = {
+      Name = "terraform_example"
+  }
 }
 resource "aws_route_table" "private_1" {
   vpc_id = aws_vpc.example.id
+  tags = {
+      Name = "terraform_example"
+  }
 }
 
 /*
@@ -142,10 +166,16 @@ resource "aws_eip" "nat_gateway" {
 resource "aws_eip" "nat_gateway_0" {
   vpc = true
   depends_on = [aws_internet_gateway.example]
+  tags = {
+      Name = "terraform_example"
+  }
 }
 resource "aws_eip" "nat_gateway_1" {
   vpc = true
   depends_on = [aws_internet_gateway.example]
+  tags = {
+      Name = "terraform_example"
+  }
 }
 
 /*
@@ -159,11 +189,17 @@ resource "aws_nat_gateway" "nat_gate_way_0" {
   allocation_id = aws_eip.nat_gateway_0.id
   subnet_id = aws_subnet.public_0.id
   depends_on = [aws_internet_gateway.example]
+  tags = {
+      Name = "terraform_example"
+  }
 }
 resource "aws_nat_gateway" "nat_gate_way_1" {
   allocation_id = aws_eip.nat_gateway_1.id
   subnet_id = aws_subnet.public_1.id
   depends_on = [aws_internet_gateway.example]
+  tags = {
+      Name = "terraform_example"
+  }
 }
 
 /*NAT*/
@@ -172,6 +208,9 @@ resource "aws_nat_gateway" "nat_gate_way_1" {
 resource "aws_security_group" "example" {
   name = "example"
   vpc_id = aws_vpc.example.id
+  tags = {
+      Name = "terraform_example"
+  }
 }
 
 resource "aws_security_group_rule" "ingress_example" {
