@@ -44,9 +44,8 @@ output "domain_name" {
 /*ACM*/
 
 resource "aws_acm_certificate" "example" {
-  provider                  = aws.us-east-1
-  domain_name               = data.aws_route53_zone.example.name
-  // *に変える
+  //provider    = aws.us-east-1
+  domain_name = data.aws_route53_zone.example.name
   //subject_alternative_names = [aws_route53_record.example_sub.name]
   subject_alternative_names = ["*.${data.aws_route53_zone.example.name}"]
   validation_method         = "DNS"
@@ -77,7 +76,7 @@ resource "aws_route53_record" "example_certificate" {
 }
 
 resource "aws_acm_certificate_validation" "example" {
-  provider                = aws.us-east-1
+  //provider                = aws.us-east-1
   certificate_arn         = aws_acm_certificate.example.arn
   validation_record_fqdns = [for record in aws_route53_record.example_certificate : record.fqdn]
   //validation_record_fqdns = [aws_route53_record.example_certificate.fqdn, aws_route53_record.example_certificate_alt.fqdn]
