@@ -48,7 +48,9 @@ output "domain_name" {
 resource "aws_acm_certificate" "example" {
   provider                  = aws.us-east-1
   domain_name               = data.aws_route53_zone.example.name
-  subject_alternative_names = [aws_route53_record.example_sub.name]
+  // *に変える
+  //subject_alternative_names = [aws_route53_record.example_sub.name]
+  subject_alternative_names = ["*.${data.aws_route53_zone.example.name}"]
   validation_method         = "DNS"
 
   lifecycle {
@@ -64,8 +66,7 @@ resource "aws_route53_record" "example_certificate" {
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
       //zone_id = dvo.domain_name == "example.org" ? data.aws_route53_zone.example_org.zone_id : data.aws_route53_zone.example_com.zone_id
-      //zone_id = data.aws_route53_zone.example.zone_id
-      zone_id = data.aws_route53_zone.example.id
+      zone_id = data.aws_route53_zone.example.zone_id
     }
   }
 
@@ -83,6 +84,7 @@ resource "aws_acm_certificate_validation" "example" {
   validation_record_fqdns = [for record in aws_route53_record.example_certificate : record.fqdn]
   //validation_record_fqdns = [aws_route53_record.example_certificate.fqdn, aws_route53_record.example_certificate_alt.fqdn]
 }
+
 /*
 resource "aws_route53_record" "example_certificate" {
   name    = aws_acm_certificate.example.domain_validation_options.0.resource_record_name
