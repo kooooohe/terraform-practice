@@ -12,7 +12,7 @@ resource "aws_route53_zone" "example_sub" {
 resource "aws_route53_record" "example" {
   depends_on      = [aws_route53_zone.example_sub]
   allow_overwrite = true
-  name            = "test.0x0-dev.co.uk"
+  name            = aws_route53_zone.example_sub.name
   ttl             = 30
   type            = "NS"
   zone_id         = data.aws_route53_zone.example.zone_id
@@ -26,8 +26,6 @@ resource "aws_route53_record" "example" {
 }
 
 resource "aws_route53_record" "example_sub" {
-  //zone_id = data.aws_route53_zone.example.zone_id
-  //name = data.aws_route53_zone.example.name
   zone_id = aws_route53_zone.example_sub.zone_id
   name    = aws_route53_zone.example_sub.name
   type    = "A"
